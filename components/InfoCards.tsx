@@ -1,7 +1,7 @@
 const cards = [
   {
     title: "About Us",
-    description: "We help you plan meals and generate shopping lists based on your chosen recipes. Our goal is to make meal planning simple and stress-free.",
+    description: "Pick the meals you want to cook, and instant shopping lists are generated. No planning, no stress.",
   },
   {
     title: "How It Works",

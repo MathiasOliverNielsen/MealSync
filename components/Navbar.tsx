@@ -23,7 +23,7 @@ const Navbar = ({ isLoggedIn = false }: NavbarProps) => {
         <div className="flex justify-between items-center h-16">
           {/* Logo / App Name */}
           <Link href="/" className="text-xl font-bold text-gray-900">
-            Meal Sync
+            MealSync
           </Link>
 
           {/* Desktop Navigation */}
