@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/icons/MealSync192x192.png" />
       </head>
       <body className="min-h-full flex flex-col">
-        <Navbar isLoggedIn={false} />
+        <Navbar />
         {children}
       </body>
     </html>

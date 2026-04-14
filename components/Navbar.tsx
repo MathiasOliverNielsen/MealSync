@@ -3,15 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import NavLinks from "./NavLinks";
-import AuthSection from "./AuthSection";
 import MobileMenuToggle from "./MobileMenuToggle";
-import MobileMenu from "./MobileMenu";
 
-type NavbarProps = {
-  isLoggedIn?: boolean;
-};
-
-const Navbar = ({ isLoggedIn = false }: NavbarProps) => {
+const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -29,15 +23,9 @@ const Navbar = ({ isLoggedIn = false }: NavbarProps) => {
           {/* Desktop Navigation */}
           <NavLinks />
 
-          {/* Desktop Auth Section */}
-          <AuthSection isLoggedIn={isLoggedIn} />
-
           {/* Mobile Menu Toggle */}
           <MobileMenuToggle isOpen={isMenuOpen} onClick={toggleMenu} />
         </div>
-
-        {/* Mobile Menu */}
-        <MobileMenu isOpen={isMenuOpen} isLoggedIn={isLoggedIn} onClose={closeMenu} />
       </div>
     </nav>
   );
