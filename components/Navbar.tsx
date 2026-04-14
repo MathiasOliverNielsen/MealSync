@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import NavLinks from "./NavLinks";
 import MobileMenuToggle from "./MobileMenuToggle";
+import MobileMenu from "./MobileMenu";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,6 +27,9 @@ const Navbar = () => {
           {/* Mobile Menu Toggle */}
           <MobileMenuToggle isOpen={isMenuOpen} onClick={toggleMenu} />
         </div>
+
+        {/* Mobile Menu */}
+        <MobileMenu isOpen={isMenuOpen} onClose={closeMenu} />
       </div>
     </nav>
   );

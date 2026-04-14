@@ -8,8 +8,8 @@ type NavLinksProps = {
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/recipes", label: "Recipes" },
+  { href: "/meal-plan", label: "Meal Plan" },
   { href: "/shopping-list", label: "Shopping List" },
-  { href: "/about", label: "About" },
 ];
 
 const NavLinks = ({ mobile = false, onLinkClick }: NavLinksProps) => (
