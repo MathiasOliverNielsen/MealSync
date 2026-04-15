@@ -1,21 +1,81 @@
 {
-  "name": "MealSync",
-  "short_name": "MS",
+  "name": "Meal Sync - Plan Meals & Shopping Lists",
+  "short_name": "MealSync",
+  "description": "Plan your meals and generate shopping lists",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#a9fee2",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
   "theme_color": "#ff1f1f",
+  "categories": ["productivity", "lifestyle"],
+  "screenshots": [
+    {
+      "src": "icons/MealSync512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "icons/MealSync192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
   "icons": [
     {
       "src": "icons/MealSync192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "icons/MealSync512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Recipes",
+      "short_name": "Recipes",
+      "description": "Browse and search recipes",
+      "url": "/recipes",
+      "icons": [
+        {
+          "src": "icons/MealSync192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Meal Plan",
+      "short_name": "Plan",
+      "description": "View your weekly meal plan",
+      "url": "/meal-plan",
+      "icons": [
+        {
+          "src": "icons/MealSync192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Shopping List",
+      "short_name": "Shopping",
+      "description": "Consolidated shopping list",
+      "url": "/shopping-list",
+      "icons": [
+        {
+          "src": "icons/MealSync192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }

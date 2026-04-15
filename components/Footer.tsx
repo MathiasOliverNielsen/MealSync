@@ -1,21 +1,19 @@
-const Footer = () => (
-  <footer className="bg-gray-800 text-gray-200 py-6 mt-8">
-    <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between px-4">
-      <div className="mb-4 md:mb-0">&copy; {new Date().getFullYear()} Meal Sync. All rights reserved.</div>
-      <div className="flex gap-4">
-        {/* Footer icon placeholders */}
-        <div className="w-8 h-8 bg-gray-700 rounded flex items-center justify-center">
-          <span className="text-gray-400 text-xs">[Icon]</span>
-        </div>
-        <div className="w-8 h-8 bg-gray-700 rounded flex items-center justify-center">
-          <span className="text-gray-400 text-xs">[Icon]</span>
-        </div>
-        <div className="w-8 h-8 bg-gray-700 rounded flex items-center justify-center">
-          <span className="text-gray-400 text-xs">[Icon]</span>
-        </div>
-      </div>
-    </div>
-  </footer>
-);
+import { Container } from "./Container";
 
-export default Footer;
+export function Footer() {
+  return (
+    <footer className="bg-gray-50 border-t border-gray-200 mt-16 md:mt-20 w-full">
+      <Container className="py-16 md:py-20">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">MealSync</h3>
+            <p className="text-base text-gray-600">Plan meals. Keep shopping simple.</p>
+          </div>
+          <div className="text-base text-gray-600">
+            <p>© 2026 MealSync. All rights reserved.</p>
+          </div>
+        </div>
+      </Container>
+    </footer>
+  );
+}

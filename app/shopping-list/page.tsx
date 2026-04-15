@@ -1,164 +1,178 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import Button from "@/components/Button";
-import { ShoppingListItem, WeeklyMealPlan } from "@/lib/types";
-import { loadMealPlanFromStorage, consolidateShoppingList, saveShoppingListToStorage, clearAllStoredData } from "@/lib/mealPlanUtils";
+import { Container } from "@/components/Container";
+import { Button } from "@/components/Button";
+import { extractIngredients, mergeIngredients, formatIngredient, type Ingredient } from "@/lib/ingredients";
+
+interface ShoppingItem {
+  name: string;
+  quantity: string;
+  checked: boolean;
+}
 
 export default function ShoppingListPage() {
-  const [shoppingList, setShoppingList] = useState<ShoppingListItem[]>([]);
-  const [mealPlan, setMealPlan] = useState<WeeklyMealPlan>({});
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
+  const [list, setList] = useState<ShoppingItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  // Load shopping list from meal plan on mount
   useEffect(() => {
-    const loaded = loadMealPlanFromStorage();
-    setMealPlan(loaded);
-    const consolidated = consolidateShoppingList(loaded);
-    setShoppingList(consolidated);
-    saveShoppingListToStorage(consolidated);
-    setIsLoaded(true);
+    const loadShoppingList = async () => {
+      const mealPlan = localStorage.getItem("mealPlan");
+      if (!mealPlan) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const plan = JSON.parse(mealPlan);
+        const allIngredients: Ingredient[] = [];
+
+        // Fetch ingredients for each meal
+        for (const day in plan) {
+          const meal = plan[day];
+          if (meal && meal.id) {
+            try {
+              const res = await fetch(`/api/recipes?type=meal&i=${meal.id}`);
+              const data = await res.json();
+              if (data.meals && data.meals[0]) {
+                const mealData = data.meals[0];
+                // Extract ingredients using utility function
+                const ingredients = extractIngredients(mealData);
+                allIngredients.push(...ingredients);
+              }
+            } catch (error) {
+              console.error(`Failed to fetch ingredients for meal ${meal.id}:`, error);
+            }
+          }
+        }
+
+        // Merge and format ingredients
+        const mergedIngredients = mergeIngredients(allIngredients);
+        const shoppingList = mergedIngredients.map((ing) => {
+          const formatted = formatIngredient(ing);
+          return {
+            name: formatted.name,
+            quantity: formatted.quantity,
+            checked: false,
+          };
+        });
+
+        setList(shoppingList);
+      } catch (error) {
+        console.error("Failed to load shopping list:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadShoppingList();
   }, []);
 
-  if (!isLoaded) {
-    return <div>Loading...</div>;
+  const handleToggleItem = (index: number) => {
+    const updated = [...list];
+    updated[index].checked = !updated[index].checked;
+    setList(updated);
+  };
+
+  const handleClearChecked = () => {
+    setList(list.filter((item) => !item.checked));
+  };
+
+  const handleClearAll = () => {
+    setList([]);
+    localStorage.removeItem("mealPlan");
+  };
+
+  const checkedCount = list.filter((item) => item.checked).length;
+
+  // Empty state
+  if (!loading && list.length === 0) {
+    return (
+      <main className="bg-white">
+        <section className="py-16 md:py-20 lg:py-24">
+          <Container>
+            <div className="max-w-2xl mx-auto text-center space-y-6">
+              <div>
+                <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">Shopping List</h1>
+                <p className="text-lg text-gray-600">Build your list from your meal plan</p>
+              </div>
+
+              <div className="space-y-6">
+                <p className="text-gray-600 text-lg">Your shopping list is empty.</p>
+                <p className="text-base text-gray-500">Create or update your meal plan to generate a shopping list.</p>
+                <Link href="/meal-plan">
+                  <Button size="lg">Create Meal Plan</Button>
+                </Link>
+              </div>
+            </div>
+          </Container>
+        </section>
+      </main>
+    );
   }
 
-  const toggleCheckItem = (itemName: string) => {
-    const newChecked = new Set(checkedItems);
-    if (newChecked.has(itemName)) {
-      newChecked.delete(itemName);
-    } else {
-      newChecked.add(itemName);
-    }
-    setCheckedItems(newChecked);
-  };
-
-  const handleClearList = () => {
-    if (confirm("Clear the entire shopping list?")) {
-      clearAllStoredData();
-      window.location.reload();
-    }
-  };
-
-  const handleRefreshList = () => {
-    const loaded = loadMealPlanFromStorage();
-    const consolidated = consolidateShoppingList(loaded);
-    setShoppingList(consolidated);
-    saveShoppingListToStorage(consolidated);
-  };
-
-  const checkedCount = checkedItems.size;
-  const totalItems = shoppingList.length;
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 md:sticky top-16 z-40">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Shopping List</h1>
-          <p className="text-gray-600">
-            {checkedCount} of {totalItems} items marked
-          </p>
+    <main className="bg-white w-full">
+      <section className="py-10 md:py-14 border-b border-gray-100 w-full">
+        <Container>
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">Shopping List</h1>
+              <p className="text-lg text-gray-600">Consolidated ingredients from your meal plan.</p>
+            </div>
 
-          {/* Actions */}
-          <div className="mt-4 flex flex-col sm:flex-row gap-3">
-            <Link href="/meal-plan">
-              <Button size="md" variant="secondary">
-                View Meal Plan
-              </Button>
-            </Link>
-            {totalItems > 0 && (
-              <>
-                <Button size="md" onClick={handleRefreshList}>
-                  Refresh List
-                </Button>
-                <Button size="md" variant="danger" onClick={handleClearList}>
-                  Clear All
-                </Button>
-              </>
+            {/* Progress */}
+            {list.length > 0 && (
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <p className="text-base font-medium text-gray-900">
+                    {checkedCount} of {list.length} items checked
+                  </p>
+                  <p className="text-sm text-gray-500">{Math.round((checkedCount / list.length) * 100)}%</p>
+                </div>
+                <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-600 transition-all duration-300" style={{ width: `${(checkedCount / list.length) * 100}%` }}></div>
+                </div>
+              </div>
             )}
-          </div>
-        </div>
-      </div>
 
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        {totalItems === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg shadow">
-            <p className="text-gray-500 text-lg mb-4">Your shopping list is empty</p>
-            <p className="text-gray-400 mb-6">Plan your meals first to generate a shopping list</p>
-            <Link href="/meal-plan">
-              <Button size="lg">View Meal Plan</Button>
-            </Link>
-          </div>
-        ) : (
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            {/* Progress bar */}
-            <div className="h-1 bg-gray-200">
-              <div
-                className="h-full bg-green-500 transition-all duration-300"
-                style={{
-                  width: totalItems > 0 ? `${(checkedCount / totalItems) * 100}%` : "0%",
-                }}
-              />
+            {/* List Actions */}
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <Button onClick={handleClearChecked} variant="secondary">
+                Clear Checked ({list.filter((i) => i.checked).length})
+              </Button>
+              <Button onClick={handleClearAll} variant="secondary">
+                Clear All
+              </Button>
             </div>
+          </div>
+        </Container>
+      </section>
 
-            {/* Items list */}
-            <div className="divide-y divide-gray-200">
-              {shoppingList.map((item) => {
-                const itemKey = `${item.name}-${item.unit}`;
-                const isChecked = checkedItems.has(itemKey);
-
-                return (
-                  <div key={itemKey} className="p-4 hover:bg-gray-50 transition-colors flex items-center gap-4">
-                    <input type="checkbox" checked={isChecked} onChange={() => toggleCheckItem(itemKey)} className="w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-2 focus:ring-green-500" />
-
-                    <div className="flex-1 min-w-0">
-                      <p className={`font-medium transition-all ${isChecked ? "text-gray-400 line-through" : "text-gray-900"}`}>{item.name}</p>
-                      <p className="text-sm text-gray-500">
-                        Appears in {item.count} meal{item.count !== 1 ? "s" : ""}
-                      </p>
-                    </div>
-
-                    <div className={`text-right shrink-0 ${isChecked ? "text-gray-400" : "text-gray-900"}`}>
-                      <p className="font-semibold">
-                        {item.amount} {item.unit}
-                      </p>
-                    </div>
+      {/* Shopping List */}
+      <section className="py-10 md:py-14 w-full">
+        <Container>
+          {loading ? (
+            <div className="text-center py-10 md:py-16">
+              <p className="text-gray-600 text-lg">Loading shopping list...</p>
+            </div>
+          ) : (
+            <div className="max-w-3xl mx-auto space-y-3">
+              {list.map((item, index) => (
+                <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-gray-300 hover:bg-white transition-all">
+                  <input type="checkbox" checked={item.checked} onChange={() => handleToggleItem(index)} className="shrink-0 w-5 h-5 rounded border-2 border-gray-300 text-blue-600 cursor-pointer" />
+                  <div className="flex-1">
+                    <span className={`font-medium ${item.checked ? "text-gray-400 line-through" : "text-gray-900"}`}>{item.name}</span>
                   </div>
-                );
-              })}
+                  {item.quantity && <span className="shrink-0 text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-lg whitespace-nowrap">{item.quantity}</span>}
+                </div>
+              ))}
             </div>
-
-            {/* Summary */}
-            <div className="bg-gray-50 p-4 border-t border-gray-200">
-              <p className="text-center text-sm text-gray-600">
-                {checkedCount > 0 && (
-                  <>
-                    Great! You've checked {checkedCount} item{checkedCount !== 1 ? "s" : ""} off your list.
-                  </>
-                )}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Info Section */}
-        {/* {totalItems > 0 && (
-          <div className="mt-8 bg-blue-50 rounded-lg p-6 border border-blue-200">
-            <h2 className="text-lg font-semibold text-blue-900 mb-3">How consolidation works:</h2>
-            <ul className="text-sm text-blue-800 space-y-2 list-inside">
-              <li>✓ Ingredients are merged by name and unit</li>
-              <li>✓ Quantities are summed (e.g., 1 onion + 1 onion = 2 onions)</li>
-              <li>✓ Quantities are rounded to 2 decimal places for clarity</li>
-              <li>✓ Items are sorted alphabetically for easy shopping</li>
-              <li>✓ The count shows how many meals use each ingredient</li>
-            </ul>
-          </div>
-        )} */}
-      </main>
-    </div>
+          )}
+        </Container>
+      </section>
+    </main>
   );
 }

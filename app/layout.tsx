@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
-import Navbar from "../components/Navbar";
-
 import "./globals.css";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Meal Sync",
-  description: "Plan your meals and generate shopping lists",
+  title: "MealSync",
+  description: "Plan your meals and generate shopping lists with TheMealDB",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#ff1f1f" />
-        <link rel="icon" href="/icons/MealSync192x192.png" />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="bg-white w-full min-h-screen flex flex-col">
         <Navbar />
-        {children}
+        <div className="w-full flex-1">{children}</div>
+        <Footer />
+        <script dangerouslySetInnerHTML={{ __html: "if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});" }} />
       </body>
     </html>
   );
