@@ -152,28 +152,28 @@ export default function RecipesPage() {
 
   return (
     <main className="bg-white w-full">
-      <section className="py-10 md:py-14 lg:py-16 border-b border-gray-100 w-full">
+      <section className="py-6 sm:py-8 md:py-14 lg:py-16 border-b border-gray-100 w-full">
         <Container>
-          <div className="space-y-6">
+          <div className="space-y-6 px-4 sm:px-0">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">Recipes</h1>
-              <p className="text-lg text-gray-600">Browse thousands of recipes, filter by cuisine, and build your meal plan.</p>
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-900 mb-3">Recipes</h1>
+              <p className="text-sm sm:text-base md:text-lg text-gray-600">Browse thousands of recipes, filter by cuisine, and build your meal plan.</p>
             </div>
 
             {/* Search and Filters */}
             <div className="space-y-4">
               {/* Search Input */}
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <div className="flex-1">
                   <SearchInput placeholder="Search recipes..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
                 </div>
-                <Button onClick={handleRandomRecipe} variant="secondary" className="sm:w-32">
+                <Button onClick={handleRandomRecipe} variant="secondary" size="md" className="w-full sm:w-auto">
                   Random
                 </Button>
               </div>
 
               {/* Filter Controls */}
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <select
                   value={category}
                   onChange={(e) => {
@@ -181,7 +181,7 @@ export default function RecipesPage() {
                       handleCategoryFilter(e.target.value);
                     }
                   }}
-                  className="px-4 py-3 border border-gray-300 rounded-lg text-sm bg-white hover:border-gray-400 transition-colors"
+                  className="px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg text-sm bg-white hover:border-gray-400 transition-colors min-h-11 sm:min-h-auto"
                 >
                   <option value="">All Categories</option>
                   {categories.map((cat) => (
@@ -198,7 +198,7 @@ export default function RecipesPage() {
                       handleAreaFilter(e.target.value);
                     }
                   }}
-                  className="px-4 py-3 border border-gray-300 rounded-lg text-sm bg-white hover:border-gray-400 transition-colors"
+                  className="px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg text-sm bg-white hover:border-gray-400 transition-colors min-h-11 sm:min-h-auto"
                 >
                   <option value="">All Cuisines</option>
                   {areas.map((a) => (
@@ -214,40 +214,40 @@ export default function RecipesPage() {
       </section>
 
       {/* Recipes Grid */}
-      <section className="py-10 md:py-14 w-full">
+      <section className="py-6 sm:py-8 md:py-14 w-full">
         <Container>
           {loading && (
-            <div className="text-center py-10 md:py-16">
-              <p className="text-gray-600 text-lg">Loading recipes...</p>
+            <div className="text-center py-10 md:py-16 px-4">
+              <p className="text-gray-600 text-base sm:text-lg">Loading recipes...</p>
             </div>
           )}
 
           {noResults && !loading && (
-            <div className="text-center py-10 md:py-16">
-              <p className="text-gray-600 mb-4 text-lg">No recipes matched your search.</p>
-              <p className="text-base text-gray-500">Try changing your filters or search term.</p>
+            <div className="text-center py-10 md:py-16 px-4">
+              <p className="text-gray-600 mb-4 text-base sm:text-lg">No recipes matched your search.</p>
+              <p className="text-sm sm:text-base text-gray-500">Try changing your filters or search term.</p>
             </div>
           )}
 
           {recipes.length > 0 && !loading && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 px-4 sm:px-0">
               {recipes.map((recipe) => (
                 <Link key={recipe.idMeal} href={`/recipes/${recipe.idMeal}`}>
-                  <div className="group cursor-pointer">
-                    <div className="relative h-64 bg-gray-100 rounded-xl overflow-hidden mb-3">
+                  <div className="group cursor-pointer h-full">
+                    <div className="relative h-48 sm:h-56 lg:h-64 bg-gray-100 rounded-xl overflow-hidden mb-3">
                       {recipe.strMealThumb ? (
                         <img src={recipe.strMealThumb} alt={recipe.strMeal} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-                          <span className="text-gray-400">No image</span>
+                          <span className="text-gray-400 text-sm">No image</span>
                         </div>
                       )}
                     </div>
                     <div className="space-y-2">
-                      <h3 className="font-semibold text-lg text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">{recipe.strMeal}</h3>
+                      <h3 className="font-semibold text-base sm:text-lg text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">{recipe.strMeal}</h3>
                       <div className="flex flex-wrap gap-2">
-                        {recipe.strCategory && <span className="inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">{recipe.strCategory}</span>}
-                        {recipe.strArea && <span className="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">{recipe.strArea}</span>}
+                        {recipe.strCategory && <span className="inline-block bg-blue-50 text-blue-700 px-2 sm:px-3 py-1 rounded-full text-xs font-medium">{recipe.strCategory}</span>}
+                        {recipe.strArea && <span className="inline-block bg-gray-100 text-gray-700 px-2 sm:px-3 py-1 rounded-full text-xs font-medium">{recipe.strArea}</span>}
                       </div>
                     </div>
                   </div>

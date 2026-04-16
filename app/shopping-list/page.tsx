@@ -91,19 +91,21 @@ export default function ShoppingListPage() {
   if (!loading && list.length === 0) {
     return (
       <main className="bg-white">
-        <section className="py-16 md:py-20 lg:py-24">
+        <section className="py-10 sm:py-12 md:py-20 lg:py-24">
           <Container>
-            <div className="max-w-2xl mx-auto text-center space-y-6">
+            <div className="max-w-2xl mx-auto text-center space-y-6 px-4 sm:px-0">
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">Shopping List</h1>
-                <p className="text-lg text-gray-600">Build your list from your meal plan</p>
+                <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-900 mb-3">Shopping List</h1>
+                <p className="text-sm sm:text-base md:text-lg text-gray-600">Build your list from your meal plan</p>
               </div>
 
               <div className="space-y-6">
-                <p className="text-gray-600 text-lg">Your shopping list is empty.</p>
-                <p className="text-base text-gray-500">Create or update your meal plan to generate a shopping list.</p>
+                <p className="text-gray-600 text-base sm:text-lg">Your shopping list is empty.</p>
+                <p className="text-sm sm:text-base text-gray-500">Create or update your meal plan to generate a shopping list.</p>
                 <Link href="/meal-plan">
-                  <Button size="lg">Create Meal Plan</Button>
+                  <Button size="md" className="w-full sm:w-auto">
+                    Create Meal Plan
+                  </Button>
                 </Link>
               </div>
             </div>
@@ -115,22 +117,22 @@ export default function ShoppingListPage() {
 
   return (
     <main className="bg-white w-full">
-      <section className="py-10 md:py-14 border-b border-gray-100 w-full">
+      <section className="py-6 sm:py-8 md:py-14 border-b border-gray-100 w-full">
         <Container>
-          <div className="space-y-6">
+          <div className="space-y-6 px-4 sm:px-0">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">Shopping List</h1>
-              <p className="text-lg text-gray-600">Consolidated ingredients from your meal plan.</p>
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-900 mb-3">Shopping List</h1>
+              <p className="text-sm sm:text-base md:text-lg text-gray-600">Consolidated ingredients from your meal plan.</p>
             </div>
 
             {/* Progress */}
             {list.length > 0 && (
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <p className="text-base font-medium text-gray-900">
+                  <p className="text-sm sm:text-base font-medium text-gray-900">
                     {checkedCount} of {list.length} items checked
                   </p>
-                  <p className="text-sm text-gray-500">{Math.round((checkedCount / list.length) * 100)}%</p>
+                  <p className="text-xs sm:text-sm text-gray-500">{Math.round((checkedCount / list.length) * 100)}%</p>
                 </div>
                 <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div className="h-full bg-blue-600 transition-all duration-300" style={{ width: `${(checkedCount / list.length) * 100}%` }}></div>
@@ -140,10 +142,10 @@ export default function ShoppingListPage() {
 
             {/* List Actions */}
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <Button onClick={handleClearChecked} variant="secondary">
+              <Button onClick={handleClearChecked} variant="secondary" size="md" className="w-full sm:w-auto">
                 Clear Checked ({list.filter((i) => i.checked).length})
               </Button>
-              <Button onClick={handleClearAll} variant="secondary">
+              <Button onClick={handleClearAll} variant="secondary" size="md" className="w-full sm:w-auto">
                 Clear All
               </Button>
             </div>
@@ -152,21 +154,26 @@ export default function ShoppingListPage() {
       </section>
 
       {/* Shopping List */}
-      <section className="py-10 md:py-14 w-full">
+      <section className="py-6 sm:py-8 md:py-14 w-full">
         <Container>
           {loading ? (
-            <div className="text-center py-10 md:py-16">
-              <p className="text-gray-600 text-lg">Loading shopping list...</p>
+            <div className="text-center py-12 md:py-20 px-4">
+              <p className="text-gray-600 text-base md:text-lg">Loading shopping list...</p>
             </div>
           ) : (
-            <div className="max-w-3xl mx-auto space-y-3">
+            <div className="max-w-3xl mx-auto space-y-2 sm:space-y-3 px-4 sm:px-0">
               {list.map((item, index) => (
-                <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-gray-300 hover:bg-white transition-all">
-                  <input type="checkbox" checked={item.checked} onChange={() => handleToggleItem(index)} className="shrink-0 w-5 h-5 rounded border-2 border-gray-300 text-blue-600 cursor-pointer" />
-                  <div className="flex-1">
-                    <span className={`font-medium ${item.checked ? "text-gray-400 line-through" : "text-gray-900"}`}>{item.name}</span>
+                <div key={index} className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-100 hover:border-gray-300 hover:bg-white transition-all">
+                  <input
+                    type="checkbox"
+                    checked={item.checked}
+                    onChange={() => handleToggleItem(index)}
+                    className="shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded border-2 border-gray-300 text-blue-600 cursor-pointer"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <span className={`font-medium text-sm sm:text-base ${item.checked ? "text-gray-400 line-through" : "text-gray-900"}`}>{item.name}</span>
                   </div>
-                  {item.quantity && <span className="shrink-0 text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-lg whitespace-nowrap">{item.quantity}</span>}
+                  {item.quantity && <span className="shrink-0 text-xs sm:text-sm font-semibold text-blue-600 bg-blue-50 px-2 sm:px-3 py-1 rounded-lg whitespace-nowrap">{item.quantity}</span>}
                 </div>
               ))}
             </div>

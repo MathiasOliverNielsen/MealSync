@@ -16,15 +16,15 @@ export function Navbar() {
 
   return (
     <nav className="bg-white border-b border-gray-100 sticky top-0 z-40 w-full">
-      <Container className="py-5 md:py-6 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors">
+      <Container className="py-4 sm:py-5 md:py-6 flex justify-between items-center px-4 sm:px-0">
+        <Link href="/" className="text-xl sm:text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors flex-shrink-0">
           MealSync
         </Link>
 
         {/* Desktop menu */}
-        <div className="hidden md:flex gap-12">
+        <div className="hidden md:flex gap-8 lg:gap-12">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="text-gray-700 hover:text-blue-600 font-medium text-base transition-colors relative group">
+            <Link key={link.href} href={link.href} className="text-gray-700 hover:text-blue-600 font-medium text-sm lg:text-base transition-colors relative group">
               {link.label}
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
             </Link>
@@ -42,9 +42,14 @@ export function Navbar() {
       {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-gray-50 border-t border-gray-100">
-          <Container className="py-6 flex flex-col gap-4">
+          <Container className="py-4 sm:py-6 flex flex-col gap-3 sm:gap-4 px-4 sm:px-0">
             {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="text-gray-700 hover:text-blue-600 font-medium text-base transition-colors block py-3 px-2" onClick={() => setIsMenuOpen(false)}>
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-gray-700 hover:text-blue-600 font-medium text-base transition-colors block py-3 sm:py-4 px-0 sm:px-2 min-h-11 flex items-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 {link.label}
               </Link>
             ))}

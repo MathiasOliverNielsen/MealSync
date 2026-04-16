@@ -108,7 +108,9 @@ export default function Home() {
                 <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-100 text-blue-600 font-bold text-lg sm:text-xl">1</div>
                 <div>
                   <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 mb-2 sm:mb-3">Browse & Search</h3>
-                  <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed">Explore thousands of recipes from our extensive database. Filter by cuisine, category, or search for your favorite dishes.</p>
+                  <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed">
+                    Explore thousands of recipes from our extensive database. Filter by cuisine, category, or search for your favorite dishes.
+                  </p>
                 </div>
               </div>
 
@@ -117,7 +119,9 @@ export default function Home() {
                 <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-100 text-blue-600 font-bold text-lg sm:text-xl">2</div>
                 <div>
                   <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 mb-2 sm:mb-3">Plan Your Week</h3>
-                  <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed">Assign meals to specific days and build your perfect weekly menu. Generate a random week or customize it yourself.</p>
+                  <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed">
+                    Assign meals to specific days and build your perfect weekly menu. Generate a random week or customize it yourself.
+                  </p>
                 </div>
               </div>
 
@@ -126,7 +130,9 @@ export default function Home() {
                 <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-100 text-blue-600 font-bold text-lg sm:text-xl">3</div>
                 <div>
                   <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 mb-2 sm:mb-3">Auto-Generate List</h3>
-                  <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed">Automatically consolidate all ingredients from your planned meals into a single shopping list with quantities.</p>
+                  <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed">
+                    Automatically consolidate all ingredients from your planned meals into a single shopping list with quantities.
+                  </p>
                 </div>
               </div>
 
@@ -144,14 +150,14 @@ export default function Home() {
       </section>
 
       {/* Features Grid */}
-      <section className="py-10 md:py-12 border-b border-gray-100 bg-gray-50 w-full">
+      <section className="py-6 sm:py-8 md:py-12 border-b border-gray-100 bg-gray-50 w-full">
         <Container>
-          <div className="space-y-6">
+          <div className="space-y-6 px-4 sm:px-0">
             <div>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900">Why Choose MealSync</h2>
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-900">Why Choose MealSync</h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
               <FeatureBox title="Smart Consolidation" description="Identical ingredients from multiple meals are automatically combined with quantities." />
               <FeatureBox title="Local Storage" description="All your data stays on your device. No accounts needed, no privacy concerns." />
               <FeatureBox title="Fully Responsive" description="Works perfectly on phone, tablet, or desktop. Design that adapts to your screen." />
@@ -164,17 +170,19 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-10 md:py-12 w-full">
+      <section className="py-6 sm:py-8 md:py-12 w-full">
         <Container>
-          <div className="max-w-2xl mx-auto text-center space-y-4">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">Ready to simplify meal planning?</h2>
-            <p className="text-lg md:text-xl text-gray-600">Start planning your meals today. No signup required, no account needed. Everything stays on your device.</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-              <Link href="/recipes">
-                <Button size="lg">Start Browsing</Button>
+          <div className="max-w-2xl mx-auto text-center space-y-4 px-4 sm:px-0">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-900">Ready to simplify meal planning?</h2>
+            <p className="text-sm sm:text-base md:text-xl text-gray-600">Start planning your meals today. No signup required, no account needed. Everything stays on your device.</p>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-6 sm:pt-8">
+              <Link href="/recipes" className="w-full sm:w-auto">
+                <Button size="md" className="w-full sm:w-auto">
+                  Start Browsing
+                </Button>
               </Link>
-              <Link href="/meal-plan">
-                <Button size="lg" variant="secondary">
+              <Link href="/meal-plan" className="w-full sm:w-auto">
+                <Button size="md" variant="secondary" className="w-full sm:w-auto">
                   View Meal Plan
                 </Button>
               </Link>
@@ -188,9 +196,9 @@ export default function Home() {
 
 function FeatureBox({ title, description }: { title: string; description: string }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-8 space-y-4 hover:border-gray-300 hover:shadow-sm transition-all">
-      <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
-      <p className="text-gray-600 leading-relaxed">{description}</p>
+    <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 md:p-8 space-y-2 sm:space-y-3 md:space-y-4 hover:border-gray-300 hover:shadow-sm transition-all">
+      <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900">{title}</h3>
+      <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{description}</p>
     </div>
   );
 }
